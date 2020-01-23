@@ -8,3 +8,8 @@
 - State
 - Hooks
 - Props
+### Part 2
+- Modules
+- Forms (Controlled)
+- Fetch data
+- Styling 
