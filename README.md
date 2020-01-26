@@ -11,5 +11,7 @@
 ### Part 2
 - Modules
 - Forms (Controlled)
-- Fetch data
+- Fetch data from server    
+- Alter data in server
+  - RESTful API
 - Styling 
