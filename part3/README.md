@@ -54,7 +54,7 @@
 
 - 3.11 The phonebook backend - Generate a production build of the frontend and add it to the internet application. Also make sure that the frontend still works locally.
   - add proxy at frontend
-    ```
+    ```json
     {
       "dependencies": {
         // ...
@@ -66,11 +66,11 @@
     }
     ```
   - make express show static content (add middleware at backend)
-  ```
-    app.use(express.static('build'))
+  ```javascript
+  app.use(express.static("build"));
   ```
   - add a build script at backend because this approach (separate front and back)
-  ```
+  ```javascript
     "build:ui": "rm -rf build && cd ../frontend && npm run build --prod && cp -r build ../3.9-3.11",
   ```
 
@@ -92,7 +92,7 @@
 
 - 3.14 Change the backend so that new numbers are saved to the database. Verify frontend still works after the changes.
   - modify the `__v` and `_id` provided by mongodb
-    ```
+    ```javascript
     personSchema.set("toJSON", {
       transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
@@ -108,15 +108,15 @@
 
 - 3.16 Move the error handling of the application to a new error handler middleware.
 
-  ```
-    const errorHandler = (error, request, response, next) => {
-      console.error(error.message)
-      if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return response.status(400).send({ error: 'malformatted id' })
-      }
-      next(error)
+  ```javascript
+  const errorHandler = (error, request, response, next) => {
+    console.error(error.message);
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return response.status(400).send({ error: "malformatted id" });
     }
-    app.use(errorHandler)
+    next(error);
+  };
+  app.use(errorHandler);
   ```
 
   - The order of middleware loading
