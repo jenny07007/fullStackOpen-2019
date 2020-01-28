@@ -27,7 +27,49 @@
 
 #
 
-- 3.7 The phonebook backend - add `morgan` middleware to the application for logging
-  sent in HTTP POST request
+- 3.7+3.8 The phonebook backend - add `morgan` middleware to the application for logging. Configure morgan so it also shows the data sent in HTTP POST request
   - [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
   - [creating new tokens](https://github.com/expressjs/morgan#creating-new-tokens)
+
+#
+
+- 3.9 The phonebook backend - Make the backend work with the frontend
+
+#
+
+- 3.10 The phonebook backend - Deploy the backend to the interent, for example to Heroku
+
+  - Procfile `web: node index.js`
+
+  ```
+    heroku create <appname>
+    git remote -v
+    git remote add heroku http://git.heroku.com/<appname>
+    git push heroku master
+    heroku open
+    heroku logs --tail
+  ```
+
+#
+
+- 3.11 The phonebook backend - Generate a production build of the frontend and add it to the internet application. Also make sure that the frontend still works locally.
+  - add proxy at frontend
+    ```
+    {
+      "dependencies": {
+        // ...
+      },
+      "scripts": {
+        // ...
+      },
+      "proxy": "http://localhost:3001"
+    }
+    ```
+  - make express show static content (add middleware at backend)
+  ```
+    app.use(express.static('build'))
+  ```
+  - add a build script at backend because this approach (separate front and back)
+  ```
+    "build:ui": "rm -rf build && cd ../frontend && npm run build --prod && cp -r build ../3.9-3.11",
+  ```

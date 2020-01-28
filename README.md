@@ -31,11 +31,18 @@
   - Server responds with status code when deleting resources successfully `res.status(204).end()`
   - [REST client - Visual Studio Code plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
   - Receiving data - [body-parser](https://github.com/expressjs/body-parser)
-  - Finding out what headers have been set in the HTTP Reauest when debugging `req.get('Content-Type')`
+  - Finding out what headers have been set in the HTTP Request when debugging `req.get('Content-Type')`
   - Spotting the missing Content-Type header `console.log(req.headers)`
   - The HTTP GET request show be [safe](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)
-  - The HTTP requests except POST shold be **idempotent**
+  - The HTTP requests except POST should be **idempotent**
   - `POST` is the only HTTP request type that is neither safe nor idempotent.
 - Deploying app to the interent
+  - cors
+  - add the `Procfile` file to the project's root
+  - backend endpoints:
+    - `https://phonebooookapi.herokuapp.com/`
+    - `https://phonebooookapi.herokuapp.com/info`
+    - `https://phonebooookapi.herokuapp.com/api/persons`
+    - `https://phonebooookapi.herokuapp.com/api/persons/:id`
 - Saving data to MongoDB
 - Validation and ESLint
