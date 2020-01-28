@@ -45,4 +45,6 @@
     - `https://phonebooookapi.herokuapp.com/api/persons`
     - `https://phonebooookapi.herokuapp.com/api/persons/:id`
 - Saving data to MongoDB
+  - create a database on mongoDB
+  - install mongoose
 - Validation and ESLint

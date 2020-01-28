@@ -73,3 +73,60 @@
   ```
     "build:ui": "rm -rf build && cd ../frontend && npm run build --prod && cp -r build ../3.9-3.11",
   ```
+
+#
+
+- 3.12 create a mongo.js file that can be used for adding entries to the phonebook, and for listing all the existing entries in the phonebook
+- `process.argv[]` to get the command-line parameters [process.argv](https://nodejs.org/docs/latest-v8.x/api/process.html#process_process_argv)
+- The correct place for closing the database connection is at the end of the callback function
+- command line `node mongo.js <password> <name> <number>` to add a new person data
+- `node mongo.js <passowrd>` to list all persons data
+
+#
+
+- 3.13 Change the fetching of all phonebook entries so that the data is fetched from the database. Verify that the frontend works after the changes have been made.
+  - write all Mongoose-specific code into its own module
+  - add `detenv` config
+
+#
+
+- 3.14 Change the backend so that new numbers are saved to the database. Verify frontend still works after the changes.
+  - modify the `__v` and `_id` provided by mongodb
+    ```
+    personSchema.set("toJSON", {
+      transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
+      }
+    });
+    ```
+- 3.15 Change the backend so that deleting phonebook entries is reflected in the database. Verify that the frontend still works after making the changes.
+  - The easiest way to delete a note from the database is with the `findByIdAndRemove`method
+
+#
+
+- 3.16 Move the error handling of the application to a new error handler middleware.
+
+  ```
+    const errorHandler = (error, request, response, next) => {
+      console.error(error.message)
+      if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return response.status(400).send({ error: 'malformatted id' })
+      }
+      next(error)
+    }
+    app.use(errorHandler)
+  ```
+
+  - The order of middleware loading
+
+#
+
+- 3.17 If the user tries to create a new phonebook entry for a person whose name is already in the phonebook, the frontend will try to update the phone number of the existing entry by making an HTTP PUT request to the entry's unique URL.
+  - Modify data can be accomplished with the `findByIdAndUpdate` method
+  - add the optional `{ new: true }` parameter, which will cause our event handler to be called with the new modified document instead of the original.
+
+#
+
+- 3.18 Also update the handling of the api/persons/:id and info routes to use the database, and verify that they work directly with the browser, Postman, or VS Code REST client.
