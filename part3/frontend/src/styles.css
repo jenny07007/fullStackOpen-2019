@@ -32,6 +32,13 @@ input:focus {
   background: #eee;
 }
 
+input::placeholder {
+  font-size: .85em;
+  letter-spacing: 0;
+  text-transform: capitalize;
+}
+
+
 .form-input {
   margin: 0.5em 0;
   height: 30px;

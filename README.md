@@ -48,3 +48,4 @@
   - create a database on mongoDB
   - install mongoose
 - Validation and ESLint
+  - [validation functionaility in Mongoose](https://mongoosejs.com/docs/validation.html)

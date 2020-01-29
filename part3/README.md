@@ -130,3 +130,23 @@
 #
 
 - 3.18 Also update the handling of the api/persons/:id and info routes to use the database, and verify that they work directly with the browser, Postman, or VS Code REST client.
+
+#
+
+- 3.19 The Phonebook database - add validation to the app, so that will make sure can only add one number for a person in the phonebook.
+  - install [mongoose-unique-validator](https://github.com/blakehaswell/mongoose-unique-validator#readme)
+  - if an HTTP POST request tries to add a name that is already in the phobebook, the server must respond with an appropriate status code and error message
+
+#
+
+- 3.20 The Phonebook database - Expand the validation so that the name stored in the database has to be at least three characters long, and the phone number must have at least 8 digits.
+  - **Key point**: in the frontend to retrive backend's error message `error.response.data.error`
+
+#
+
+- 3.21 The Phonebook database - deploying the database backend to production
+  - 💁🏼‍♀️ [ final app](https://phonebooookapi.herokuapp.com/)
+
+#
+
+- 3.22 Lint configuration

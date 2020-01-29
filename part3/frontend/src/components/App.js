@@ -66,12 +66,19 @@ const App = () => {
       number: newNumber
     };
 
-    personsService.create(newNameObj).then(returnedPersons => {
-      setPersons([...persons, returnedPersons]);
-      showNotification("success!", `${newNameObj.name} has been added!`);
-      setNewName("");
-      setNewNumber("");
-    });
+    personsService
+      .create(newNameObj)
+      .then(returnedPerson => {
+        setPersons([...persons, returnedPerson]);
+        showNotification("success!", `${newNameObj.name} has been added!`);
+        setNewName("");
+        setNewNumber("");
+      })
+      .catch(error => {
+        console.log(error);
+        showNotification("error!", error.response.data.error);
+        // console.log(error.response.data.error);
+      });
   };
 
   const updateData = id => {

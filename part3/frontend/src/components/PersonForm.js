@@ -12,11 +12,21 @@ const AddNewData = ({ newName, newNumber, setNewName, setNewNumber }) => {
     <form>
       <div className="form-input">
         <label>name</label>
-        <input type="text" value={newName} onChange={handleNameChange} />
+        <input
+          type="text"
+          value={newName}
+          onChange={handleNameChange}
+          placeholder="Must have 3 characters"
+        />
       </div>
       <div className="form-input">
         <label>number</label>
-        <input type="text" value={newNumber} onChange={handleNumberChange} />
+        <input
+          type="text"
+          value={newNumber}
+          onChange={handleNumberChange}
+          placeholder="10 numbers without symbols"
+        />
       </div>
       <div>
         <button type="submit">add</button>

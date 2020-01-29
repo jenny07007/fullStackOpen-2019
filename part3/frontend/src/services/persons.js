@@ -12,12 +12,8 @@ const getAll = async () => {
 };
 
 const create = async person => {
-  try {
-    const res = await axios.post(baseUrl, person);
-    return res.data;
-  } catch (e) {
-    console.log(e);
-  }
+  const res = await axios.post(baseUrl, person);
+  return res.data;
 };
 
 const remove = async id => {
