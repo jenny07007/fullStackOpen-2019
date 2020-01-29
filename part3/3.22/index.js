@@ -10,14 +10,14 @@ const unknownEndpoint = require("./middlewares/unknownEndpoint");
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static("build"));
-morgan.token("body", (req, res) => JSON.stringify(req.body));
+morgan.token("body", (req) => JSON.stringify(req.body));
 
 const loggerFormat =
   ":method :url :status :res[content-length] - :response-time ms - :body";
 
 app.use(
   morgan(loggerFormat, {
-    skip: function(req, res) {
+    skip: function(req) {
       return req.method !== "POST";
     }
   })
@@ -25,7 +25,7 @@ app.use(
 
 app.use(
   morgan("combined", {
-    skip: function(req, res) {
+    skip: function(req) {
       return req.method === "POST";
     }
   })
@@ -52,9 +52,9 @@ app.get("/api/persons/:id", async (req, res, next) => {
     return person
       ? res.json(person.toJSON())
       : res
-          .status(404)
-          .send({ error: "Can't find the person" })
-          .end();
+        .status(404)
+        .send({ error: "Can't find the person" })
+        .end();
   } catch (error) {
     console.log(error);
     next(error);

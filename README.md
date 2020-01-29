@@ -47,5 +47,8 @@
 - Saving data to MongoDB
   - create a database on mongoDB
   - install mongoose
-- Validation and ESLint
   - [validation functionaility in Mongoose](https://mongoosejs.com/docs/validation.html)
+- Validation and ESLint
+  - [rules](https://eslint.org/docs/rules/)
+  - [Javascript style guide](https://github.com/airbnb/javascript)
+  - [Airbnb's ESlint configuration](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
