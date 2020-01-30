@@ -52,3 +52,10 @@
   - [rules](https://eslint.org/docs/rules/)
   - [Javascript style guide](https://github.com/airbnb/javascript)
   - [Airbnb's ESlint configuration](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
+
+### Part 4
+
+- Structure of backend application
+- Testing the backend
+- User administration
+- Token authentication

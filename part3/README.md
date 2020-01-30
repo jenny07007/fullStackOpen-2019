@@ -168,3 +168,19 @@
   - Inspecting and validating `node_modules/.bin/eslint index.js`
   - Create a separate `npm scrpt` - `"lint": "eslint ."`
   - Create a `.eslintignore` file - `Build`
+  - A better structure
+    ```
+      ├── index.js
+      ├── app.js
+      ├── build
+      │   ├── ...
+      ├── controllers
+      │   └── Persons.js
+      ├── models
+      │   └── person.js
+      ├── package-lock.json
+      ├── package.json
+      ├── utils
+      │   ├── config.js
+      │   └── middleware.js
+    ```
