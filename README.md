@@ -57,5 +57,11 @@
 
 - Structure of backend application
 - Testing the backend
+  - Mock database library - [mongo-mock](https://github.com/williamkapke/mongo-mock)
+  - Integration testing - multiple components of the system are being tested as a group
+  - Separate the `Logger` when doing tests
+    - Logging services
+      - [papertrail](https://www.papertrail.com/)
+      - [graylog](https://www.graylog.org/)
 - User administration
 - Token authentication
