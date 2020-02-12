@@ -133,6 +133,10 @@
   - Initialising the database before running tests
   - [beforeEach](https://jestjs.io/docs/en/api.html#beforeeachfn-timeout) - executing operations once before any test is run, or every time before a test is run.
 
+  - [toContain](https://jestjs.io/docs/en/expect.html#tocontainitem)
+
+  - `npx jest -t "blogs"` - run all of the tests that contain blogs in their name
+
 #
 
 - 4.10 Blog list tests
@@ -149,3 +153,15 @@
 
 - 4.12 Blog list tests
   - write a test related to creating new blogs via the `/api/blogs` endpoint, that verifies that if the `title` and `url` properties are missing from the request data, the backend responds to the request with the status `code 400 Bad Request`.
+
+#
+
+- 4.13 Blog list tests
+  - implement functionality for deleting a single blog post resource.
+  - use async/await and follow REST API conventions when defining the HTTP API
+
+#
+
+- 4.14 Blog list tests
+  - implement functionality for updating the information of an individual blog post.
+  - use async/await
