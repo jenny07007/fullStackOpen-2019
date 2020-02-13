@@ -151,7 +151,7 @@
 
 #
 
-- 4.12 Blog list tests
+- 4.12 Blog list **tests**
   - write a test related to creating new blogs via the `/api/blogs` endpoint, that verifies that if the `title` and `url` properties are missing from the request data, the backend responds to the request with the status `code 400 Bad Request`.
 
 #
@@ -165,3 +165,153 @@
 - 4.14 Blog list tests
   - implement functionality for updating the information of an individual blog post.
   - use async/await
+
+#
+
+### User administration
+
+- [Mongo lookup aggregation queries](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
+- schema-less databases require developers to make far more redical design decisions about data organisation at the beginning of the project than relational databases
+
+```javascript
+notes: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Note"
+  }
+];
+```
+
+###
+
+- handling passwords
+  - [one-way hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function)
+  - [node-bcrypt](https://github.com/kelektiv/node.bcrypt.js)
+  - [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator) - for checking the uniqueness of a field
+  ```javascript
+    const uniqueValidator = require('mongoose-unique-validator')
+    const userSchema = new mongoose.Schema({
+    username: {
+      type: String,
+      unique: true  },
+      ...
+      userSchema.plugin(uniqueValidator)
+  ```
+- about `join` (add notes to an user or add users to a note)
+  - Mangoose doesn't hane the `join` query like relational databases which are **transactional**, means that the state of the database does not change during the time that query is made.
+  - Mongoose uses the [populate](https://mongoosejs.com/docs/populate.html) method
+    ```javascript
+    const users = await User.find({}).populate("notes");
+    ```
+  - The parameter given to the `populate` method defines that the `ids` referencing `note` objects in the `notes` field of the `user` document will be replaced by the referenced `note` documents.
+  ```javascript
+  const users = await User.find({}).populate({ content: 1, date: 1 });
+  ```
+- the database does not know that ids stored in the `user` field of notes reference documents in the user collection. The fuctionality of the `popluate` method of Mongoose is based on that we have defined `types` to the references in the Mongoose schema with the `ref` option
+
+```javascript
+const noteSchema = new mongoose.Schema({
+  content: {
+    type: String,
+    required: true,
+    minlength: 5
+  },
+  date: Date,
+  important: Boolean,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
+});
+```
+
+#
+
+### Token authentication
+
+- [token based authentication](https://scotch.io/tutorials/the-ins-and-outs-of-token-based-authentication#toc-how-token-based-works)
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- the passwords themselves are not saved to the database, but `hashes` calculated from the passwords, the `bcrypt.compare` method is used to check if the password is correct:
+  `await bcrypt.compare(body.password, user.passwordHash)`
+- If the password is correct, a token is created with the method `jwt.sign`.
+
+```javascript
+const userForToken = {
+  username: user.username,
+  id: user._id
+};
+
+const token = jwt.sign(userForToken, process.env.SECRET);
+```
+
+- sending the token from the browser to the server
+
+  - `Authorization` header. The header also tells which [authentication schema](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#Authentication_schemes) is used
+
+  ```javascript
+    const getTokenFrom = request => {  const authorization = request.get('authorization')  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {    return authorization.substring(7)  }  return null}
+  ```
+
+  - The helper function `getTokenFrom` isolates the token from the authorization header. The validity of the token is checked with `jwt.verify`.
+  - then decode the token
+
+    ```javascript
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    ```
+
+  - Error handling
+
+  ```javascript
+    if (error.name === 'JsonWebTokenError') {
+       return response.status(401).json({      error: 'invalid token'
+    })
+  ```
+
+#
+
+###
+
+- 4.15 bloglist
+  - create new users by doing a HTTP POST request to address `/api/users`.
+  - users have `username`, `password` and `name`
+  - use `bcrypt` to hash users' passwords
+
+#
+
+- 4.16 bloglist
+  - need to have both `username` and `password`
+  - `username` and `password` must be at least 3 characters
+  - the `username` must be unique
+  - the operation must respond with a suitable status code and some kind of an error message if invalid user is created.
+
+#
+
+- 4.17 bloglist
+  - use `populate` to let each blog contain information on the creator of the blog
+  - and to list all users also display the blogs created by each user
+
+#
+
+- 4.18 bloglist
+  - implement token-based authentication
+
+#
+
+- 4.19 bloglist
+  - modify adding new blogs that is only possible if a valid token os sent with the HTTP POST requst.
+  - the user indentified by the token is designated as the creator of the blog
+
+#
+
+- 4.20 bloglist
+  - refactor the `getTokenFrom` function to a middleware
+  - the middleware should take the token from the `Authorization` header and place it to the `token` field of the `request` object
+
+#
+
+- 4.21 bloglist
+  - change the delete blog operation so that a blog can be deleted only by the user who added the blog
+  - if deleting a blog is attempted without a token or by a wrong user, the operation should return a suitable status code
+    - `const blog = await Blog.findById(...)`
+  - the field `blog.user` does not contain a string, but an Object. So if you want to compare the id of the object fetched from the database and a string id, normal comparison operation does not work. The id fetched from the database must be parsed into a string first.
+    - `if ( blog.user.toString() === userid.toString() ) ...`
