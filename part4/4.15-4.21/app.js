@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const blogRouter = require("./routers/blogsRouter");
 const userRouter = require("./routers/usersRouter");
+const loginRouter = require("./routers/loginRouter");
 const app = express();
 
 const url = config.MONGODB_URI;
@@ -43,4 +44,6 @@ app.use(
 
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
+app.use("/api/login", loginRouter);
+
 module.exports = app;

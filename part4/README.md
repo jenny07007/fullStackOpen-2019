@@ -235,37 +235,46 @@ const noteSchema = new mongoose.Schema({
   `await bcrypt.compare(body.password, user.passwordHash)`
 - If the password is correct, a token is created with the method `jwt.sign`.
 
-```javascript
-const userForToken = {
-  username: user.username,
-  id: user._id
-};
+  ```javascript
+  const userForToken = {
+    username: user.username,
+    id: user._id
+  };
 
-const token = jwt.sign(userForToken, process.env.SECRET);
-```
+  const token = jwt.sign(userForToken, process.env.SECRET);
+  ```
 
 - sending the token from the browser to the server
 
   - `Authorization` header. The header also tells which [authentication schema](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#Authentication_schemes) is used
 
   ```javascript
-    const getTokenFrom = request => {  const authorization = request.get('authorization')  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {    return authorization.substring(7)  }  return null}
+  const getTokenFrom = request => {
+    const authorization = request.get("authorization");
+    if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+      return authorization.substring(7);
+    }
+    return null;
+  };
   ```
 
-  - The helper function `getTokenFrom` isolates the token from the authorization header. The validity of the token is checked with `jwt.verify`.
-  - then decode the token
+````
 
-    ```javascript
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    ```
-
-  - Error handling
+- The helper function `getTokenFrom` isolates the token from the authorization header. The validity of the token is checked with `jwt.verify`.
+- then decode the token
 
   ```javascript
-    if (error.name === 'JsonWebTokenError') {
-       return response.status(401).json({      error: 'invalid token'
-    })
+  const decodedToken = jwt.verify(token, process.env.SECRET);
   ```
+
+- Error handling
+
+```javascript
+  if (error.name === 'JsonWebTokenError') {
+      return response.status(401).json({error: 'invalid token'
+    }
+  )
+```
 
 #
 
@@ -315,3 +324,4 @@ const token = jwt.sign(userForToken, process.env.SECRET);
     - `const blog = await Blog.findById(...)`
   - the field `blog.user` does not contain a string, but an Object. So if you want to compare the id of the object fetched from the database and a string id, normal comparison operation does not work. The id fetched from the database must be parsed into a string first.
     - `if ( blog.user.toString() === userid.toString() ) ...`
+````
