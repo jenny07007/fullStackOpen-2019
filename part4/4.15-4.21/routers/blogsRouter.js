@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const blogsRouter = require("express").Router();
 const Blog = require("../models/Blog");
 const User = require("../models/User");
@@ -7,25 +8,79 @@ blogsRouter.get("/", async (req, res) => {
   res.json(blogs.map(blog => blog.toJSON()));
 });
 
-blogsRouter.post("/", async (req, res) => {
+blogsRouter.post("/", async (req, res, next) => {
   const { title, author, url, likes, userId } = req.body;
-
-  const user = await User.findById(userId);
-  const blog = new Blog({
-    title,
-    author,
-    url,
-    likes: likes || 0,
-    user: user._id
-  });
+  const token = req.token;
 
   try {
+    const decodeToken = jwt.verify(token, process.env.SECRET);
+    if (!(token || decodeToken.id)) {
+      return res.status(401).json({ error: "token is missing or invalid" });
+    }
+
+    const user = await User.findById(userId);
+    const blog = new Blog({
+      title,
+      author,
+      url,
+      likes: likes || 0,
+      user: user._id
+    });
+
     const newBlog = await blog.save();
     user.blogs = user.blogs.concat(newBlog._id);
     await user.save();
     res.json(newBlog.toJSON());
   } catch (error) {
-    res.status(201).json();
+    next(error);
+  }
+});
+
+blogsRouter.delete("/:id", async (req, res, next) => {
+  const token = req.token;
+  try {
+    const decodeToken = jwt.verify(token, process.env.SECRET);
+    if (!(token || decodeToken.id)) {
+      return res.status(401).json({ error: "token is missing or invalid" });
+    }
+    const user = await User.findById(decodeToken.id);
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) return res.status(204).end();
+
+    if (user.id.toString() !== blog.user.toString()) {
+      return res.status(401).json({ error: "Unanthorized user token" });
+    }
+
+    await Blog.findByIdAndRemove(req.params.id);
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+});
+
+blogsRouter.put("/:id", async (req, res, next) => {
+  const token = req.token;
+  const content = req.body;
+
+  try {
+    const decodeToken = jwt.verify(token, process.env.SECRET);
+    if (!(token || decodeToken.id)) {
+      return res.status(401).json({ error: "token is missing or invalid" });
+    }
+    const user = await User.findById(decodeToken.id);
+    const blog = await Blog.findById(req.params.id);
+
+    if (user.id.toString() !== blog.user.toString()) {
+      return res.status(401).json({ error: "Unanthorized user token" });
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, content, {
+      new: true
+    });
+    res.json(updatedBlog.toJSON());
+  } catch (error) {
+    next(error);
   }
 });
 

@@ -7,6 +7,12 @@ const morgan = require("morgan");
 const blogRouter = require("./routers/blogsRouter");
 const userRouter = require("./routers/usersRouter");
 const loginRouter = require("./routers/loginRouter");
+const {
+  tokenExtractor,
+  requestLogger,
+  unknowEndpoint,
+  errorHandler
+} = require("./utils/middleware");
 const app = express();
 
 const url = config.MONGODB_URI;
@@ -21,6 +27,8 @@ mongoose
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(requestLogger);
+app.use(tokenExtractor);
 
 morgan.token("body", req => JSON.stringify(req.body));
 const loggerFormat =
@@ -45,5 +53,7 @@ app.use(
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+app.use(unknowEndpoint);
+app.use(errorHandler);
 
 module.exports = app;

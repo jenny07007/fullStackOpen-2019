@@ -207,7 +207,7 @@ notes: [
   ```javascript
   const users = await User.find({}).populate({ content: 1, date: 1 });
   ```
-- the database does not know that ids stored in the `user` field of notes reference documents in the user collection. The fuctionality of the `popluate` method of Mongoose is based on that we have defined `types` to the references in the Mongoose schema with the `ref` option
+- the database does not know that ids stored in the `user` field of notes reference documents in the user collection. The fuctionality of the `popluate` method of Mongoose is based on that we have defined `types` to the references in the Mongoose schema with the **`ref`** option
 
 ```javascript
 const noteSchema = new mongoose.Schema({
@@ -231,9 +231,9 @@ const noteSchema = new mongoose.Schema({
 
 - [token based authentication](https://scotch.io/tutorials/the-ins-and-outs-of-token-based-authentication#toc-how-token-based-works)
 - [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-- the passwords themselves are not saved to the database, but `hashes` calculated from the passwords, the `bcrypt.compare` method is used to check if the password is correct:
+- the passwords themselves are not saved to the database, but `hashes` calculated from the passwords, the **`bcrypt.compare`** method is used to check if the password is correct:
   `await bcrypt.compare(body.password, user.passwordHash)`
-- If the password is correct, a token is created with the method `jwt.sign`.
+- If the password is correct, a token is created with the method **`jwt.sign`**.
 
   ```javascript
   const userForToken = {
@@ -258,21 +258,18 @@ const noteSchema = new mongoose.Schema({
   };
   ```
 
-````
-
-- The helper function `getTokenFrom` isolates the token from the authorization header. The validity of the token is checked with `jwt.verify`.
-- then decode the token
+* The helper function `getTokenFrom` isolates the token from the authorization header. The validity of the token is checked with **`jwt.verify`**.
+* then decode the token
 
   ```javascript
   const decodedToken = jwt.verify(token, process.env.SECRET);
   ```
 
-- Error handling
+* Error handling
 
 ```javascript
   if (error.name === 'JsonWebTokenError') {
-      return response.status(401).json({error: 'invalid token'
-    }
+      return response.status(401).json({error: 'invalid token'}
   )
 ```
 
@@ -283,7 +280,7 @@ const noteSchema = new mongoose.Schema({
 - 4.15 bloglist
   - create new users by doing a HTTP POST request to address `/api/users`.
   - users have `username`, `password` and `name`
-  - use `bcrypt` to hash users' passwords
+  - use **`bcrypt`** to hash users' passwords
 
 #
 
@@ -296,7 +293,7 @@ const noteSchema = new mongoose.Schema({
 #
 
 - 4.17 bloglist
-  - use `populate` to let each blog contain information on the creator of the blog
+  - use **`populate`** to let each blog contain information on the creator of the blog
   - and to list all users also display the blogs created by each user
 
 #
@@ -307,21 +304,24 @@ const noteSchema = new mongoose.Schema({
 #
 
 - 4.19 bloglist
-  - modify adding new blogs that is only possible if a valid token os sent with the HTTP POST requst.
+  - modify adding new blogs that is only possible if a valid token is sent with the HTTP POST requst.
   - the user indentified by the token is designated as the creator of the blog
 
 #
 
 - 4.20 bloglist
   - refactor the `getTokenFrom` function to a middleware
-  - the middleware should take the token from the `Authorization` header and place it to the `token` field of the `request` object
+  - the middleware should take the token from the **`Authorization`** **header** and place it to the `token` field of the `request` object
 
 #
 
 - 4.21 bloglist
   - change the delete blog operation so that a blog can be deleted only by the user who added the blog
   - if deleting a blog is attempted without a token or by a wrong user, the operation should return a suitable status code
-    - `const blog = await Blog.findById(...)`
+    ```javascript
+    const blog = await Blog.findById(...)
+    ```
   - the field `blog.user` does not contain a string, but an Object. So if you want to compare the id of the object fetched from the database and a string id, normal comparison operation does not work. The id fetched from the database must be parsed into a string first.
-    - `if ( blog.user.toString() === userid.toString() ) ...`
-````
+  ```javascript
+    if ( blog.user.toString() === userid.toString() ) ...
+  ```
