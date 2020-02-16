@@ -9,7 +9,7 @@ blogsRouter.get("/", async (req, res) => {
 });
 
 blogsRouter.post("/", async (req, res, next) => {
-  const { title, author, url, likes, userId } = req.body;
+  const { title, author, url, likes } = req.body;
   const token = req.token;
 
   try {
@@ -18,7 +18,7 @@ blogsRouter.post("/", async (req, res, next) => {
       return res.status(401).json({ error: "token is missing or invalid" });
     }
 
-    const user = await User.findById(userId);
+    const user = await User.findById(decodeToken.id);
     const blog = new Blog({
       title,
       author,

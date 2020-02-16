@@ -65,3 +65,10 @@
       - [graylog](https://www.graylog.org/)
 - User administration
 - Token authentication
+
+### Part 5
+
+- Login in frontend
+- props.children and proptypes
+- Testing React apps
+- Custom hooks
