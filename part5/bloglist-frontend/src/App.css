@@ -1,0 +1,18 @@
+.message {
+  padding: .5em 1.3em;
+  font-size: .85rem;
+  text-transform: capitalize;
+  letter-spacing: .8px;
+  font-weight: bold;
+  margin: 2em 0;
+}
+
+.success {
+  color: rgb(24, 179, 117);
+  background-color: rgba(24, 179, 117, .1);
+}
+
+.error {
+  color: rgb(186, 16, 124);
+  background-color: rgba(186, 16, 124, .1);
+}
