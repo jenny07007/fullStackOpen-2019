@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { getAll, setToken, create } from "./services/blogs";
 import { login } from "./services/login";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable.js";
 import "./App.css";
 
 function App() {
@@ -110,49 +112,39 @@ function App() {
     </form>
   );
 
-  const blogForm = () => (
-    <form onSubmit={onAddNewBlog}>
+  const blogForm = () => {
+    return (
       <div>
-        <label>title</label>
-        <input value={newBlog.title} name="title" onChange={onNewblogChange} />
+        <h2>blogs</h2>
+        {notification && (
+          <Notification
+            type={notification.type}
+            message={notification.message}
+          />
+        )}
+        <div>
+          {user.username} logged in{" "}
+          <button onClick={handleLogout}>logout</button>
+        </div>
+        <Togglable buttonLabel="New Blog">
+          <h4>create new</h4>
+          <BlogForm
+            onNewblogChange={onNewblogChange}
+            onAddNewBlog={onAddNewBlog}
+            newBlog={newBlog}
+          />
+        </Togglable>
+        <ul>
+          {blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+        </ul>
       </div>
-      <div>
-        <label>author</label>
-        <input
-          value={newBlog.author}
-          name="author"
-          onChange={onNewblogChange}
-        />
-      </div>
-      <label>
-        <label>url</label>
-        <input value={newBlog.url} name="url" onChange={onNewblogChange} />
-      </label>
-      <button type="submit">Create</button>
-    </form>
-  );
+    );
+  };
 
   return (
     <div>
       {user ? (
-        <div>
-          <h2>blogs</h2>
-          {notification && (
-            <Notification
-              type={notification.type}
-              message={notification.message}
-            />
-          )}
-          <div>
-            {user.username} logged in{" "}
-            <button onClick={handleLogout}>logout</button>
-          </div>
-          <h4>create new</h4>
-          {blogForm()}
-          <ul>
-            {blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
-          </ul>
-        </div>
+        blogForm()
       ) : (
         <div>
           <h2>Log in</h2>

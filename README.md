@@ -33,7 +33,7 @@
   - Receiving data - [body-parser](https://github.com/expressjs/body-parser)
   - Finding out what headers have been set in the HTTP Request when debugging `req.get('Content-Type')`
   - Spotting the missing Content-Type header `console.log(req.headers)`
-  - The HTTP GET request show be [safe](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)
+  - The HTTP GET request should be [safe](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)
   - The HTTP requests except POST should be **idempotent**
   - `POST` is the only HTTP request type that is neither safe nor idempotent.
 - Deploying app to the interent
@@ -69,6 +69,8 @@
 ### Part 5
 
 - Login in frontend
+  - JWT implementation
 - props.children and proptypes
+  - Togglable component
 - Testing React apps
 - Custom hooks
