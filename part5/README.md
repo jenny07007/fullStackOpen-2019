@@ -10,7 +10,7 @@
 
   - 🌟 **my takeaways**
     - use `[name]: value` to handle multiple input values (may refactor to hooks later on)
-    - need to use `callback` function when updating a state based on the pevious state
+    - need using `callback` function when updating the state based on the previous state
       ```javascript
       const onNewblogChange = e => {
         const { name, value } = e.target;
@@ -22,7 +22,7 @@
 
 - 5.2 Bloglist frontend
 
-  - use local storage to let a user's login/logout state is permanent
+  - use local storage to let a user's login/logout state permanent
     - Values in the storage stay even when the page is rerendered. The storage is [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin)-specific so each web application has its own storage.
     - Values saved to the storage are [DOMstrings](https://developer.mozilla.org/en-US/docs/Web/API/DOMString), so we cannot save a JavaScript object as is. The object has to be first parsed to JSON with the method `JSON.stringify`. Correspondigly, when a JSON object is read from the local storage, it has to be parsed back to JavaScript with `JSON.parse`.
 
@@ -37,8 +37,8 @@
 #
 
 - 5.3 Bloglist frontend
-  - allow a logged in user to add new blogs
-  - implement the token from frontend so that users must have the `token` to create a new blog
+  - allow a logged-in user to add new blogs
+  - implement token in the frontend so that users must have the `token` to create a new blog
     - we've got the `JWT token` object when users passed the password validation (at backend logginRouter through the `jwt.sign` function)
     - export the `setToken` function for the `handleLogin` event
     - set the config object with `headers: {Authorization: token}` in the `create` function
@@ -49,3 +49,45 @@
   - implement notifications
     - successfully added a new blog
     - error states (wrong username/password)
+
+#
+
+- 5.5 Bloglist frontend
+
+  - a `new blog` button to be able to toggle the create blog form that is hidden as default
+  - `Togglable` component
+  - if a component is defined with an automatically closing `/>` tag, the `props.children` is an empty array
+
+#
+
+- 5.6 Bloglist frontend
+  - show all content in the blog list when the list has been clicked
+  - reference to components with `ref`
+    - `createRef` creates a `ref` that can be attached to React elements via the ref attrubute
+    - `forwardRef` creates a React component that forwards the `ref` attribute it receives to another component below the tree. It is particularly useful in two scenarios:
+      - Forwarding refs to DOM components
+      - Forwarding refs in higher-order-components
+  - `useImperativeHandle` hook is used for defining functions in a component which can be invoked from outside of the component.
+
+#
+
+- 5.7 Bloglist frontend
+  - implement the functionality of the `like` button
+  - likes are increased by making an HTTP `PUT` request
+  - `/api/blogs/:id`
+
+#
+
+- 5.8 Bloglist frontend
+  - sorting the blog list order by numbers of `likes`
+
+#
+
+- 5.9 Bloglist frontend
+  - add a `delete` button
+  - implement the logic for deleting blog posts in the backend.
+
+#
+
+- 5.10 Bloglist frontend
+  - show the button for deleting a blog post only if the blog post was added by the user.

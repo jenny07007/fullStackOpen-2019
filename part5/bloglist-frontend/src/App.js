@@ -16,6 +16,7 @@ function App() {
     password: ""
   });
   const [notification, setNotification] = useState();
+  const blogFormRef = React.createRef();
 
   useEffect(() => {
     (async () => {
@@ -72,6 +73,9 @@ function App() {
 
   const onAddNewBlog = async e => {
     e.preventDefault();
+
+    blogFormRef.current.toggleVisibility();
+
     const { title, author, url } = newBlog;
     try {
       const newBlogObj = {
@@ -89,8 +93,8 @@ function App() {
   };
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
+    <form onSubmit={handleLogin} className="form-login">
+      <div className="form-item">
         <label>username</label>
         <input
           type="text"
@@ -99,7 +103,7 @@ function App() {
           onChange={onUserLoginInfoChange}
         />
       </div>
-      <div>
+      <div className="form-item">
         <label>password</label>
         <input
           type="password"
@@ -108,14 +112,31 @@ function App() {
           onChange={onUserLoginInfoChange}
         />
       </div>
-      <button type="submit">Login</button>
+      <button className="btn submit-btn" type="submit">
+        Login
+      </button>
     </form>
   );
 
   const blogForm = () => {
     return (
-      <div>
+      <div className="create-new-form">
         <h2>blogs</h2>
+
+        <div className="subtitle-login-info">
+          <p>
+            <span className="username">
+              <span role="img" aria-label="user-emoji">
+                🦊{" "}
+              </span>
+              {user.username}
+            </span>{" "}
+            logged in
+          </p>
+          <button className="btn logout-btn" onClick={handleLogout}>
+            logout
+          </button>
+        </div>
         {notification && (
           <Notification
             type={notification.type}
@@ -123,17 +144,14 @@ function App() {
           />
         )}
         <div>
-          {user.username} logged in{" "}
-          <button onClick={handleLogout}>logout</button>
+          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+            <BlogForm
+              onNewblogChange={onNewblogChange}
+              onAddNewBlog={onAddNewBlog}
+              newBlog={newBlog}
+            />
+          </Togglable>
         </div>
-        <Togglable buttonLabel="New Blog">
-          <h4>create new</h4>
-          <BlogForm
-            onNewblogChange={onNewblogChange}
-            onAddNewBlog={onAddNewBlog}
-            newBlog={newBlog}
-          />
-        </Togglable>
         <ul>
           {blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
         </ul>
@@ -146,7 +164,7 @@ function App() {
       {user ? (
         blogForm()
       ) : (
-        <div>
+        <div className="home-login">
           <h2>Log in</h2>
           {notification && (
             <Notification
