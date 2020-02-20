@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roboto Mono", sans-serif;
   font-size: 14px;
 }
 
@@ -22,12 +22,11 @@ a:link {
 h2 {
   font-size: 2em;
   text-transform: uppercase;
-  padding: 2em 0 .5em 0em;
+  padding: 2em 0 0.5em 0em;
 }
 
 h4 {
   display: inline-block;
-
 }
 
 .home-login {
@@ -64,7 +63,7 @@ h4 {
 }
 
 .btn {
-  padding: .8em 1.9em;
+  padding: 0.8em 1.9em;
   border: none;
   background: blue;
   outline: none;
@@ -72,7 +71,7 @@ h4 {
   font-weight: bold;
   margin-bottom: 1em;
   cursor: pointer;
-  border-radius: .3em;
+  border-radius: 0.3em;
   text-transform: uppercase;
 }
 
@@ -90,13 +89,30 @@ h4 {
   margin-left: calc(100% - 80%);
   margin-bottom: 4em;
   width: 60%;
-  color: #999
+  color: #999;
 }
 
 .logout-btn {
   margin-left: auto;
   color: #999;
   background-color: #eee;
+}
+
+.delete-btn {
+  margin-top: 1.3em;
+  padding: 0.6em 0.7em;
+  font-size: 0.9em;
+  font-weight: bold;
+  border: none;
+  color: tomato;
+  border: 1px solid #eee;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  outline: 0;
+  border: 1px solid tomato;
 }
 
 .create-new-form {
@@ -107,19 +123,17 @@ h4 {
   margin: 0 auto;
 }
 
-
-
 .form-item {
   display: flex;
   flex-direction: column;
   width: 60%;
-  margin: .5em auto;
+  margin: 0.5em auto;
 }
 
 label {
-  padding: .5em 0 .5em .3em;
+  padding: 0.5em 0 0.5em 0.3em;
   text-transform: uppercase;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   font-weight: bold;
 }
 
@@ -128,23 +142,20 @@ input {
   height: 2.5em;
   letter-spacing: 1px;
   color: blue;
-  padding-left: .5em;
+  padding-left: 0.5em;
   box-shadow: 2px 2px blue;
 }
 
 input:focus {
   border: 2px solid blue;
   color: blue;
-  padding-left: .5em;
+  padding-left: 0.5em;
   background-color: palegreen;
 }
 
-input[type=password] {
+input[type="password"] {
   margin-bottom: 1em;
-  ;
 }
-
-
 
 .blog-style {
   display: flex;
@@ -163,10 +174,6 @@ input[type=password] {
   align-items: center;
 }
 
-.blog-list-toggle:hover {
-  background-color: #eee;
-}
-
 .blog-list-title {
   color: blue;
   font-size: 1.3em;
@@ -175,9 +182,8 @@ input[type=password] {
 }
 
 .blog-list-title span {
-  color: #222
+  color: #222;
 }
-
 
 .blog-list-toggle-btn {
   border: none;
@@ -197,16 +203,15 @@ input[type=password] {
 
 .blog-list {
   color: blue;
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: bold;
 }
-
 
 .fa-heart {
   color: tan;
   font-size: 1.2em;
   cursor: pointer;
-  transition: border .1s ease-in-out;
+  transition: border 0.1s ease-in-out;
 }
 
 .fa-heart:hover {
@@ -217,14 +222,14 @@ input[type=password] {
   outline: none;
   border: none;
   margin-left: 10px;
+  background-color: white;
 }
 
-
 .message {
-  padding: .5em 1.3em;
-  font-size: .85rem;
+  padding: 0.5em 1.3em;
+  font-size: 0.85rem;
   text-transform: capitalize;
-  letter-spacing: .8px;
+  letter-spacing: 0.8px;
   font-weight: bold;
   margin: 2em 0;
 }
@@ -233,17 +238,17 @@ input[type=password] {
   font-size: 1em;
   padding: 1em 1em;
   color: rgb(24, 179, 117);
-  background-color: rgba(24, 179, 117, .1);
+  background-color: rgba(24, 179, 117, 0.1);
 }
 
 .error {
   font-size: 1em;
   padding: 1em 1em;
   color: rgb(186, 16, 124);
-  background-color: rgba(186, 16, 124, .1);
+  background-color: rgba(186, 16, 124, 0.1);
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 480px) {
   .home-login {
     width: 90vw;
   }
@@ -254,12 +259,12 @@ input[type=password] {
 
   .blog-style {
     width: 90vw;
-    margin: 1em -.3em;
+    margin: 1em -0.3em;
   }
 
   .form-item {
     width: 80%;
-    margin: .5em auto;
+    margin: 0.5em auto;
   }
 
   .submit-btn {
@@ -274,7 +279,7 @@ input[type=password] {
   }
 }
 
-@media screen and (min-widht: 451px) and (max-width: 769px) {
+@media screen and (min-widht: 481px) and (max-width: 769px) {
   .home-login {
     width: 80vw;
   }
@@ -293,7 +298,7 @@ input[type=password] {
   }
 
   .form-item {
-    margin: .5em auto;
+    margin: 0.5em auto;
   }
 
   .submit-btn {

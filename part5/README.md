@@ -67,7 +67,7 @@
     - `forwardRef` creates a React component that forwards the `ref` attribute it receives to another component below the tree. It is particularly useful in two scenarios:
       - Forwarding refs to DOM components
       - Forwarding refs in higher-order-components
-  - `useImperativeHandle` hook is used for defining functions in a component which can be invoked from outside of the component.
+  - `useImperativeHandle` [hook](https://reactjs.org/docs/hooks-reference.html#useimperativehandle) is used for defining functions in a component which can be invoked from outside of the component.
 
 #
 
@@ -85,7 +85,7 @@
 
 - 5.9 Bloglist frontend
   - add a `delete` button
-  - implement the logic for deleting blog posts in the backend.
+  - implement the logic form deleting blog posts in the backend.
 
 #
 

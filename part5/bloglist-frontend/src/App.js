@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getAll, setToken, create } from "./services/blogs";
+import { getAll, setToken, create, update, remove } from "./services/blogs";
 import { login } from "./services/login";
-import Blog from "./components/Blog";
+import BlogList from "./components/BlogList";
 import BlogForm from "./components/BlogForm";
+import BlogFormHeader from "./components/BlogFormHeader";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable.js";
 import "./App.css";
@@ -92,6 +93,53 @@ function App() {
     }
   };
 
+  const onHandleLikes = async blogId => {
+    try {
+      let serverBlog = await blogs.find(b => b.id === blogId);
+      const newLikes = serverBlog.likes + 1;
+
+      let blogToUpdate = {
+        ...serverBlog,
+        likes: newLikes,
+        user: user.id
+      };
+      const updatedBlog = await update(blogId, blogToUpdate);
+
+      setBlogs(blogs.map(blog => (blog.id === blogId ? updatedBlog : blog)));
+      showNotification(
+        "Success!",
+        `You liked "${serverBlog.title}" by ${serverBlog.author}`
+      );
+    } catch (error) {
+      showNotification("Error!", `Something went wrong`);
+    }
+  };
+
+  const onHandleRemove = async blogId => {
+    try {
+      let serverBlog = await blogs.find(b => b.id === blogId);
+
+      let comfirmToDelete = window.confirm(
+        `Are you sure you want to delete "${serverBlog.title} by ${serverBlog.author}"? It'll be gone forever!`
+      );
+
+      if (!comfirmToDelete) return;
+      await remove(blogId);
+
+      const removedBlog = blogs.filter(blog => blog.id !== blogId);
+      setBlogs(removedBlog);
+      showNotification(
+        "Success!",
+        `${serverBlog.title} by ${serverBlog.author} has been deleted`
+      );
+    } catch (error) {
+      showNotification(
+        "Error!",
+        `You can't delete the blog that doesn't belong to you!`
+      );
+    }
+  };
+
   const loginForm = () => (
     <form onSubmit={handleLogin} className="form-login">
       <div className="form-item">
@@ -122,21 +170,7 @@ function App() {
     return (
       <div className="create-new-form">
         <h2>blogs</h2>
-
-        <div className="subtitle-login-info">
-          <p>
-            <span className="username">
-              <span role="img" aria-label="user-emoji">
-                🦊{" "}
-              </span>
-              {user.username}
-            </span>{" "}
-            logged in
-          </p>
-          <button className="btn logout-btn" onClick={handleLogout}>
-            logout
-          </button>
-        </div>
+        <BlogFormHeader user={user} handleLogout={handleLogout} />
         {notification && (
           <Notification
             type={notification.type}
@@ -153,7 +187,11 @@ function App() {
           </Togglable>
         </div>
         <ul>
-          {blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+          <BlogList
+            blogs={blogs}
+            onHandleLikes={onHandleLikes}
+            onHandleRemove={onHandleRemove}
+          />
         </ul>
       </div>
     );
