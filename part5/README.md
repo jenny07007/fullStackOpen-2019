@@ -110,3 +110,110 @@
       "eslint": "eslint ."
   },
   ```
+
+#
+
+##### teseting react app
+
+- [jest](https://jestjs.io/)
+- [enzyme](https://github.com/airbnb/enzyme) (doesn't support hooks properly )
+- [react-testing-library](https://github.com/testing-library/react-testing-library)
+
+```js
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+```
+
+```js
+import { render } from "@testing-library/react";
+```
+
+- normally React components are rendered to the DOM. the render method we use to render the components is suitable for tests without rendering then to the DOM
+- `render` returns an object. one of the properties is called `container` which contains all of the HTML rendered by the component
+
+##### running tests
+
+- create-react-app configures tests to be run in watch mode by default, which means that the `npm test` command will not exit once the tests have finished, and will instead wait for changes to be made to the code.
+
+  - run tests normally
+
+  ```js
+    CI-true npm test
+  ```
+
+  - [watchman](https://facebook.github.io/watchman/)
+
+#####
+
+- three ways to test the content of components
+
+  ```js
+  // search for a matching text from the entire HTML code rendered by the component
+  expect(component.container).toHaveTextContent("testing react app");
+
+  // use `getByText` method returns the element that contains the given text
+  // an exception occurs if no such element exists
+  const element = component.getByText("testing react app");
+  expect(element).toBeDefined();
+
+  // search for a specific element that is rendered by the component with the `querySlector` method
+  const title = component.container.querySelector(".title");
+  expect(title).toHaveTextContent("testing react app");
+  ```
+
+- Debug method
+  - [debug](https://testing-library.com/docs/react-testing-library/api#debug)
+- `prettyDOM` method
+  - search for a smaller part of the component and print its HTML code
+  - `import { prettyDOM } from '@testing-library/dom'`
+- set up `setupTests.js` in the src/
+  ```js
+  import "@testing-library/jest-dom/extend-expect";
+  ```
+
+###
+
+##### clicking buttons in tests
+
+```js
+  import { render, fireEvent } from '@testing-library/react
+```
+
+- the [fireEvent method](https://testing-library.com/docs/dom-testing-library/api-events#fireevent)
+- using a [mock function](https://jestjs.io/docs/en/mock-functions.html)
+
+```js
+const mockHandler = jest.fn();
+```
+
+- the test finds the button based on the text from the rendered component and clicks the element
+
+```js
+const button = component.getByTest("like");
+fireEvent.click(button);
+```
+
+- the exepction of the test verifies that mock function has been called exactly once
+
+```js
+expect(mockHandler.mock.calls.length).toBe(1);
+```
+
+- [Mock objects and functions](https://en.wikipedia.org/wiki/Mock_object) are commonly used stub components in testing that are used for replacing dependencies of the components being tested. Mocks make it possible to return hardcoded responses, and to verify the number of times the mock functions are called and with what parameters.
+
+#
+
+#
+
+- 5.13 BlogList tests
+  - write a test that verifies that the component renders the title, author and amount of likes for the blog post.
+
+#
+
+- 5.14 BlogList tests
+  - write a test that verifies that if the like button of a component is pressed twice, the event handler function passed in the component's props is called twice.
+
+#
+
+- 5.15 BlogList tests
+  - write tests for the Blog component of your application that verify that only the name and author of the blog post are shown by default.
+  - verify that when the blog post is clicked, the other information of the blog post becomes visible.
