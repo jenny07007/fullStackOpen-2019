@@ -3,9 +3,10 @@ import { getAll, setToken, create, update, remove } from "./services/blogs";
 import { login } from "./services/login";
 import BlogList from "./components/BlogList";
 import BlogForm from "./components/BlogForm";
+import LoginForm from "./components/LoginForm";
 import BlogFormHeader from "./components/BlogFormHeader";
 import Notification from "./components/Notification";
-import Togglable from "./components/Togglable.js";
+import Togglable from "./components/Togglable";
 import "./App.css";
 
 function App() {
@@ -52,11 +53,11 @@ function App() {
       setUser(user);
       setUserLoginInfo({ username: "", password: "" });
     } catch (error) {
-      showNotification("Error!", `incorrect username or password!`);
+      showNotification("Error!", "incorrect username or password!");
     }
   };
 
-  const handleLogout = e => {
+  const handleLogout = () => {
     window.localStorage.removeItem("LoggedInUser");
     setUser(null);
     setToken(null);
@@ -86,19 +87,19 @@ function App() {
       };
       const createdBlog = await create(newBlogObj);
       setNewBlog([...blogs, createdBlog]);
-      showNotification("success!", `${title} by ${author} has been created!`);
+      showNotification("success!", `"${title} by ${author}" has been created!`);
       setNewBlog({ title: "", author: "", url: "" });
     } catch (error) {
-      showNotification("Error!", `all information is required!`);
+      showNotification("Error!", "all information is required!");
     }
   };
 
   const onHandleLikes = async blogId => {
     try {
-      let serverBlog = await blogs.find(b => b.id === blogId);
+      const serverBlog = await blogs.find(b => b.id === blogId);
       const newLikes = serverBlog.likes + 1;
 
-      let blogToUpdate = {
+      const blogToUpdate = {
         ...serverBlog,
         likes: newLikes,
         user: user.id
@@ -111,15 +112,15 @@ function App() {
         `You liked "${serverBlog.title}" by ${serverBlog.author}`
       );
     } catch (error) {
-      showNotification("Error!", `Something went wrong`);
+      showNotification("Error!", "Something went wrong");
     }
   };
 
   const onHandleRemove = async blogId => {
     try {
-      let serverBlog = await blogs.find(b => b.id === blogId);
+      const serverBlog = await blogs.find(b => b.id === blogId);
 
-      let comfirmToDelete = window.confirm(
+      const comfirmToDelete = window.confirm(
         `Are you sure you want to delete "${serverBlog.title} by ${serverBlog.author}"? It'll be gone forever!`
       );
 
@@ -130,41 +131,15 @@ function App() {
       setBlogs(removedBlog);
       showNotification(
         "Success!",
-        `${serverBlog.title} by ${serverBlog.author} has been deleted`
+        `"${serverBlog.title} by ${serverBlog.author}" has been deleted`
       );
     } catch (error) {
       showNotification(
         "Error!",
-        `You can't delete the blog that doesn't belong to you!`
+        "You can't delete the blog that doesn't belong to you!"
       );
     }
   };
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin} className="form-login">
-      <div className="form-item">
-        <label>username</label>
-        <input
-          type="text"
-          value={userLoginInfo.username}
-          name="username"
-          onChange={onUserLoginInfoChange}
-        />
-      </div>
-      <div className="form-item">
-        <label>password</label>
-        <input
-          type="password"
-          value={userLoginInfo.password}
-          name="password"
-          onChange={onUserLoginInfoChange}
-        />
-      </div>
-      <button className="btn submit-btn" type="submit">
-        Login
-      </button>
-    </form>
-  );
 
   const blogForm = () => {
     return (
@@ -210,7 +185,11 @@ function App() {
               type={notification.type}
             />
           )}
-          {loginForm()}
+          <LoginForm
+            handleLogin={handleLogin}
+            userLoginInfo={userLoginInfo}
+            onUserLoginInfoChange={onUserLoginInfoChange}
+          />
         </div>
       )}
     </div>

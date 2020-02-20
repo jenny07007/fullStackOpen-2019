@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const BlogForm = ({ onNewblogChange, onAddNewBlog, newBlog }) => (
   <form onSubmit={onAddNewBlog} className="create-new-form">
@@ -20,5 +21,11 @@ const BlogForm = ({ onNewblogChange, onAddNewBlog, newBlog }) => (
     </button>
   </form>
 );
+
+BlogForm.propTypes = {
+  onAddNewBlog: PropTypes.func.isRequired,
+  onNewblogChange: PropTypes.func.isRequired,
+  newBlog: PropTypes.object.isRequired
+};
 
 export default BlogForm;

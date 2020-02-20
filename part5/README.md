@@ -91,3 +91,22 @@
 
 - 5.10 Bloglist frontend
   - show the button for deleting a blog post only if the blog post was added by the user.
+
+#
+
+- 5.11 Bloglist frontend
+  - define PropTypes for one of the components of the application
+  - `npm install prop-types`
+
+#
+
+- 5.12 BlogList frontend
+  - add ESlint to the project. fix all the linter errors
+  - `npm add --save-dev eslint-plugin-jest`
+  ```js
+  {
+    "scripts": {
+      ...
+      "eslint": "eslint ."
+  },
+  ```

@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 const BlogFormHeader = ({ user, handleLogout }) => {
   return (
     <div className="subtitle-login-info">
@@ -18,6 +18,11 @@ const BlogFormHeader = ({ user, handleLogout }) => {
       </button>
     </div>
   );
+};
+
+BlogFormHeader.propTypes = {
+  user: PropTypes.object.isRequired,
+  handleLogout: PropTypes.func.isRequired
 };
 
 export default BlogFormHeader;

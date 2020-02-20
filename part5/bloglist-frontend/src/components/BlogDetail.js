@@ -1,5 +1,6 @@
 import React, { useImperativeHandle } from "react";
-
+import PropTypes from "prop-types";
+// eslint-disable-next-line react/display-name
 const BlogDetail = React.forwardRef(
   ({ blog, visible, setVisible, onHandleLikes, onHandleRemove }, ref) => {
     const showStyle = {
@@ -31,5 +32,13 @@ const BlogDetail = React.forwardRef(
     );
   }
 );
+
+BlogDetail.propTypes = {
+  blog: PropTypes.object.isRequired,
+  visible: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  onHandleLikes: PropTypes.func.isRequired,
+  onHandleRemove: PropTypes.func.isRequired
+};
 
 export default BlogDetail;
