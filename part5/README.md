@@ -277,6 +277,19 @@ await waitForElement(() => component.container.querySelector(".note"));
   CI=true npm test -- --coverage
 ```
 
+#### snapshot testing
+
+- [snapshot testing](https://jestjs.io/docs/en/snapshot-testing.html)
+  - to compare the HTML code defined by the component after it has changed to the HTML code that exists before
+
+#
+
+#### end-to-end tests
+
+- inspects the application through the same interface as real end-users
+- use library like [Selenium](https://www.selenium.dev/)
+- use [headless-broswer](https://en.wikipedia.org/wiki/Headless_browser)
+
 #
 
 - 5.13 BlogList tests
@@ -318,15 +331,51 @@ await waitForElement(() => component.container.querySelector(".note"));
 
 #
 
-#### snapshot testing
-
-- [snapshot testing](https://jestjs.io/docs/en/snapshot-testing.html)
-  - to compare the HTML code defined by the component after it has changed to the HTML code that exists before
+- 5.18 Blog list and hooks
+  - simplify the login form with the `useField` custom hook
 
 #
 
-#### end-to-end tests
+- 5.19 Blog list and hooks
+  - add a `reset` operation for clearing the field
+  - use the improved hook in the form for creating a new blog post
 
-- inspects the application through the same interface as real end-users
-- use library like [Selenium](https://www.selenium.dev/)
-- use [headless-broswer](https://en.wikipedia.org/wiki/Headless_browser)
+#
+
+- 5.20 Blog list and hooks
+  - fix the `Invalid value for prop reset' on <input> tag` problem if it happens
+
+#
+
+- 5.21 ultimate hooks
+  - extract code for the code communicating with the backend into its own `useResource` hook
+
+#
+
+- **Rules fo hooks**
+  - don't call hooks inside loops, conditions, or nested functions. Instead, always use hooks at the top level of the React function
+  - don't call hooks from regular JS function, instead:
+    - call hooks from react function components
+    - call hooks from custom hooks
+
+#
+
+- modifying `.eslintrc.js` add `eslint-plugin-react-hooks`
+  ```js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      "react-hooks"
+    ],
+    rules: {
+      "react-hooks/rules-of-hooks": "error" // ...
+    }
+  };
+  ```
+
+#
+
+- [awesome react hooks resources](https://github.com/rehooks/awesome-react-hooks)
+- [Why Do React Hooks Rely on Call Order?](https://overreacted.io/why-do-hooks-rely-on-call-order/)
+- [Easy to understand React Hook recipes by Gabe Ragland](https://usehooks.com/)
