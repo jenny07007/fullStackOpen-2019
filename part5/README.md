@@ -113,7 +113,7 @@
 
 #
 
-##### teseting react app
+### teseting react app
 
 - [jest](https://jestjs.io/)
 - [enzyme](https://github.com/airbnb/enzyme) (doesn't support hooks properly )
@@ -130,7 +130,7 @@ import { render } from "@testing-library/react";
 - normally React components are rendered to the DOM. the render method we use to render the components is suitable for tests without rendering then to the DOM
 - `render` returns an object. one of the properties is called `container` which contains all of the HTML rendered by the component
 
-##### running tests
+#### running tests
 
 - create-react-app configures tests to be run in watch mode by default, which means that the `npm test` command will not exit once the tests have finished, and will instead wait for changes to be made to the code.
 
@@ -172,7 +172,7 @@ import { render } from "@testing-library/react";
 
 ###
 
-##### clicking buttons in tests
+#### clicking buttons in tests
 
 ```js
   import { render, fireEvent } from '@testing-library/react
@@ -200,7 +200,82 @@ expect(mockHandler.mock.calls.length).toBe(1);
 
 - [Mock objects and functions](https://en.wikipedia.org/wiki/Mock_object) are commonly used stub components in testing that are used for replacing dependencies of the components being tested. Mocks make it possible to return hardcoded responses, and to verify the number of times the mock functions are called and with what parameters.
 
-#
+- [toHaveStyle](https://www.npmjs.com/package/@testing-library/jest-dom#tohavestyle) to verify visible or invisble
+
+#### testing forms
+
+- In practice, we used `fireEvent` to create a click event for the button component. We can also use fireEvent to **simulate filling forms.**
+- create a Wrapper helper to render the form and manage its state props
+
+  ```js
+  const Wrapper = props => {
+    const onChange = event => {
+      props.state.value = event.target.value;
+    };
+
+    return (
+      <NoteForm
+        value={props.state.value}
+        onSubmit={props.onSubmit}
+        handleChange={onChange}
+      />
+    );
+  };
+  ```
+
+  ```js
+  const Wrapper = props => {
+    // ...
+  };
+
+  test("<NoteForm /> updates parent state and calls onSubmit", () => {
+    const onSubmit = jest.fn();
+    const state = {
+      value: ""
+    };
+    // pass `onSubmit` mock func and state obj for representing the state
+    const component = render(<Wrapper onSubmit={onSubmit} state={state} />);
+
+    const input = component.container.querySelector("input");
+    const form = component.container.querySelector("form");
+
+    // simulate writing text into the input elem by creating a change event for the input
+    fireEvent.change(input, {
+      target: { value: "testing of forms could be easier" }
+    });
+    // form is submitted by simulating  a submit event
+    fireEvent.submit(form);
+
+    expect(onSubmit.mock.calls.length).toBe(1);
+    expect(state.value).toBe("testing of forms could be easier");
+  });
+  ```
+
+#### frontend integration tests
+
+- challenges
+
+  - data fetched from backend - [sountion](https://jestjs.io/docs/en/manual-mocks.html#content)
+    - create a `__mocks__` subdirectory under the `services` directory that defines `getAll` function returns a hardcoded list, and wrapped a promise with `Promise.solve` method
+    -
+  - local storage for storing information - [solutions](https://stackoverflow.com/questions/32911630/how-do-i-deal-with-localstorage-in-jest-tests)
+    - write localStorageMock in the `setupTests.js`
+
+- re-rendering the component
+  `component.rerender(<App />)`
+- useing [waitForElement](https://testing-library.com/docs/dom-testing-library/api-async#waitforelement) function for verifying that the App component renders because fetching data from server is an asynchronous event
+
+```js
+await waitForElement(() => component.container.querySelector(".note"));
+```
+
+#### test coverage
+
+- [test coverage](https://github.com/facebook/create-react-app/blob/ed5c48c81b2139b4414810e1efe917e04c96ee8d/packages/react-scripts/template/README.md#coverage-reporting)
+
+```js
+  CI=true npm test -- --coverage
+```
 
 #
 
@@ -215,5 +290,43 @@ expect(mockHandler.mock.calls.length).toBe(1);
 #
 
 - 5.15 BlogList tests
+
   - write tests for the Blog component of your application that verify that only the name and author of the blog post are shown by default.
   - verify that when the blog post is clicked, the other information of the blog post becomes visible.
+
+#
+
+- 5.16 BlogList tests
+  - write an integration test for your application that verifies that if the user is not logged into the application, then the application only displays a login form and no blogs are rendered.
+  - use `waitForElement`
+
+#
+
+- 5.17 BlogList tests
+
+  - write another test that verifies that when the user is logged in, the blog posts are rendered to the page.
+
+  ```js
+  const user = {
+    username: "tester",
+    token: "1231231214",
+    name: "Donald Tester"
+  };
+
+  localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
+  ```
+
+#
+
+#### snapshot testing
+
+- [snapshot testing](https://jestjs.io/docs/en/snapshot-testing.html)
+  - to compare the HTML code defined by the component after it has changed to the HTML code that exists before
+
+#
+
+#### end-to-end tests
+
+- inspects the application through the same interface as real end-users
+- use library like [Selenium](https://www.selenium.dev/)
+- use [headless-broswer](https://en.wikipedia.org/wiki/Headless_browser)
