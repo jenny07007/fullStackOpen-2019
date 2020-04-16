@@ -74,3 +74,9 @@
   - Togglable component
 - Testing React apps
 - Custom hooks
+
+### Part6
+
+- Flux-architecture and Redux
+- reducers, connect
+- communicating with server in a redux app
